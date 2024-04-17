@@ -2,7 +2,7 @@
 
 - name: "2.1.4.1 | PATCH | Ensure ntp access control is configured "
   ansible.builtin.lineinfile:
-      path: /etc/ntp.conf
+      path: /etc/ntpsec/ntp.conf
       regexp: '^(restrict) (|{{ item }}) .*$'
       line: 'restrict {{ item }} default kod nomodify notrap nopeer noquery'
   loop:
@@ -22,7 +22,7 @@
   block:
       - name: "2.1.4.2 | PATCH | Ensure ntp is configured with authorized timeserver | pool"
         ansible.builtin.lineinfile:
-            path: /etc/ntp.conf
+            path: /etc/ntpsec/ntp.conf
             regexp: '^pool.*'
             line: 'pool {{ item.name }} {{ item.options }}'
         notify: Restart timeservice
@@ -32,7 +32,7 @@
 
       - name: "2.1.4.2 | PATCH | Ensure ntp is configured with authorized timeserver | servers"
         ansible.builtin.lineinfile:
-            path: /etc/ntp.conf
+            path: /etc/ntpsec/ntp.conf
             insertafter: '^server'
             line: 'server {{ item.name }} {{ item.options }}'
         loop: "{{ ubtu22cis_time_servers }}"
