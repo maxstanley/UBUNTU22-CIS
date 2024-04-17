@@ -48,11 +48,11 @@
       - rule_2.1.4.2
       - ntp
 
-- name: "2.1.4.3 | PATCH | Ensure ntp is running as user ntp"
+- name: "2.1.4.3 | PATCH | Ensure ntp is running as user ntpsec"
   ansible.builtin.lineinfile:
-      path: /etc/init.d/ntp
-      regexp: '^RUNASUSER.*'
-      line: 'RUNASUSER=ntp'
+      path: /usr/libexec/ntpsec/ntp-systemd-wrapper
+      state: present
+      line: 'NTPD_OPTS="$NTPD_OPTS -i ntpsec:ntpsec"'
   notify: Restart timeservice
   when:
       - ubtu22cis_rule_2_1_4_3
